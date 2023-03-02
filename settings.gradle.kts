@@ -1,2 +1,2 @@
 rootProject.name = "spring-playground"
-include("kotlin-jooq")
+include("flyway-jooq")
