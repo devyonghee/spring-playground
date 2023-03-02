@@ -4,6 +4,7 @@ plugins {
     id("org.springframework.boot") version "3.0.3"
     id("io.spring.dependency-management") version "1.1.0"
     kotlin("jvm") version "1.7.22"
+    kotlin("plugin.spring") version "1.7.22"
     id("org.jlleitschuh.gradle.ktlint") version "11.2.0"
     id("org.jlleitschuh.gradle.ktlint-idea") version "11.2.0"
 }
@@ -19,11 +20,20 @@ allprojects {
 }
 
 subprojects {
+    apply(plugin = "org.springframework.boot")
+    apply(plugin = "io.spring.dependency-management")
+
+    apply(plugin = "org.jetbrains.kotlin.plugin.spring")
     apply(plugin = "org.jetbrains.kotlin.jvm")
     apply(plugin = "org.jlleitschuh.gradle.ktlint")
     configure<org.jlleitschuh.gradle.ktlint.KtlintExtension> {
         debug.set(true)
     }
+
+    dependencies {
+        testImplementation("org.springframework.boot:spring-boot-starter-test")
+    }
+
     tasks.withType<KotlinCompile> {
         kotlinOptions {
             jvmTarget = "17"
