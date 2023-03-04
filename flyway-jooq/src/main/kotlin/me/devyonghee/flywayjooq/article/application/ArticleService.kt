@@ -1,7 +1,7 @@
-package me.devyonghee.flywayjooq.application
+package me.devyonghee.flywayjooq.article.application
 
-import me.devyonghee.flywayjooq.domain.Article
-import me.devyonghee.flywayjooq.domain.ArticleRepository
+import me.devyonghee.flywayjooq.article.domain.Article
+import me.devyonghee.flywayjooq.article.domain.ArticleRepository
 import org.springframework.stereotype.Service
 
 @Service

@@ -1,4 +1,4 @@
-package me.devyonghee.flywayjooq.domain
+package me.devyonghee.flywayjooq.article.domain
 
 interface ArticleRepository {
 

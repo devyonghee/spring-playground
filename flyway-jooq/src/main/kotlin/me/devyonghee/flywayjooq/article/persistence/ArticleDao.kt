@@ -1,8 +1,8 @@
-package me.devyonghee.flywayjooq.persistence
+package me.devyonghee.flywayjooq.article.persistence
 
-import me.devyonghee.flywayjooq.domain.Article
-import me.devyonghee.flywayjooq.domain.ArticleRepository
-import me.devyonghee.flywayjooq.persistence.jooq.JooqArticleRepository
+import me.devyonghee.flywayjooq.article.domain.Article
+import me.devyonghee.flywayjooq.article.domain.ArticleRepository
+import me.devyonghee.flywayjooq.article.persistence.jooq.JooqArticleRepository
 import org.springframework.stereotype.Repository
 
 @Repository
@@ -15,6 +15,6 @@ class ArticleDao(
     }
 
     override fun findById(slug: String): Article? {
-        return jooqArticleRepository.findById(slug)
+        return jooqArticleRepository.findBySlug(slug)
     }
 }

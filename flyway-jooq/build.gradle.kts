@@ -4,9 +4,10 @@ plugins {
 }
 
 val flywayMigration = configurations.create("flywayMigration")
+val h2Path = "${project.buildDir}/generated/jooqh2"
 
 flyway {
-    url = "jdbc:h2:~/jooq-flyway"
+    url = "jdbc:h2:file:$h2Path"
     user = "sa"
     password = ""
     configurations = arrayOf(flywayMigration.name)
@@ -17,6 +18,8 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-validation")
     implementation("org.springframework.boot:spring-boot-starter-jooq")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
+    testImplementation("org.springframework.boot:spring-boot-starter-test")
+    testImplementation("io.rest-assured:rest-assured")
 
     runtimeOnly("com.h2database:h2")
     jooqGenerator("com.h2database:h2")
@@ -57,4 +60,7 @@ tasks.named("generateJooq").configure {
     inputs.files(fileTree("src/main/resources/db/migration"))
         .withPropertyName("migrations")
         .withPathSensitivity(PathSensitivity.RELATIVE)
+    doLast {
+        delete("$h2Path.mv.db")
+    }
 }

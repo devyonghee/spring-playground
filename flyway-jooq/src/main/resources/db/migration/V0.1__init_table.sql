@@ -5,9 +5,7 @@ CREATE TABLE article
     description VARCHAR(255) NOT NULL,
     body        TEXT         NOT NULL,
     created_at  DATETIME     NOT NULL,
-    created_by  VARCHAR(255) NOT NULL,
-    updated_at  DATETIME     NOT NULL,
-    updated_by  VARCHAR(255) NOT NULL
+    updated_at  DATETIME     NOT NULL
 );
 
 CREATE TABLE tag
