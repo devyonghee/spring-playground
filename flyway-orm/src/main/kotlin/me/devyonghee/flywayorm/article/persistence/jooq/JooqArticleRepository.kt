@@ -3,8 +3,8 @@ package me.devyonghee.flywayorm.article.persistence.jooq
 import me.devyonghee.flywayorm.article.domain.Article
 import me.devyonghee.flywayorm.article.persistence.jooq.dto.ArticleDto
 import me.devyonghee.flywayorm.article.persistence.jooq.dto.TagDto
+import me.devyonghee.kotlinjooq.generated.Tables.ARTICLE
 import me.devyonghee.kotlinjooq.generated.Tables.TAG
-import me.devyonghee.kotlinjooq.generated.tables.Article.ARTICLE
 import org.jooq.DSLContext
 import org.jooq.Field
 import org.jooq.Records

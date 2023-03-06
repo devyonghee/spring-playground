@@ -1,7 +1,7 @@
 CREATE TABLE article
 (
     slug        VARCHAR(255) NOT NULL PRIMARY KEY,
-    title       VARCHAR(255) NOT NULL,
+    title       VARCHAR(255) NOT NULL UNIQUE,
     description VARCHAR(255) NOT NULL,
     body        TEXT         NOT NULL,
     created_at  DATETIME     NOT NULL,
@@ -18,7 +18,8 @@ CREATE TABLE tag
 
 CREATE TABLE users
 (
-    username  VARCHAR(255) NOT NULL PRIMARY KEY,
+    id        INT          NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    username  VARCHAR(255) NOT NULL UNIQUE,
     email     VARCHAR(255) NOT NULL UNIQUE,
     password  VARCHAR(255) NOT NULL,
     bio       VARCHAR(255) NOT NULL,

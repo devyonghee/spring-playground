@@ -2,7 +2,7 @@ package me.devyonghee.flywayorm.user.persistence.jooq
 
 import me.devyonghee.flywayorm.user.domain.Email
 import me.devyonghee.flywayorm.user.domain.User
-import me.devyonghee.kotlinjooq.generated.tables.Users.USERS
+import me.devyonghee.kotlinjooq.generated.tables.JUsers.USERS
 import org.jooq.DSLContext
 import org.springframework.stereotype.Component
 import java.net.URI
@@ -27,6 +27,7 @@ class UserJooqRepository(
 
     fun findByUsername(username: String): User? {
         return dslContext.select(
+            USERS.ID,
             USERS.USERNAME,
             USERS.PASSWORD,
             USERS.EMAIL,
@@ -39,6 +40,7 @@ class UserJooqRepository(
 }
 
 class UserDto(
+    private val id: Int,
     private val username: String,
     private val email: String,
     private val password: String,

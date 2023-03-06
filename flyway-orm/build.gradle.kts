@@ -16,10 +16,15 @@ flyway {
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-validation")
-    implementation("org.springframework.boot:spring-boot-starter-jooq")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("io.rest-assured:rest-assured")
+
+    //jooq
+    implementation("org.springframework.boot:spring-boot-starter-jooq")
+    //exposed
+    implementation("org.jetbrains.exposed:exposed-spring-boot-starter:0.41.1")
+    implementation("org.jetbrains.exposed:exposed-kotlin-datetime:0.41.1")
 
     runtimeOnly("com.h2database:h2")
     jooqGenerator("com.h2database:h2")
@@ -39,6 +44,7 @@ jooq {
                     password = flyway.password
                 }
                 generator.apply {
+                    strategy.name = org.jooq.codegen.example.JPrefixGeneratorStrategy::class.java.name
                     database.apply {
                         name = "org.jooq.meta.h2.H2Database"
                         inputSchema = "PUBLIC"
@@ -46,6 +52,7 @@ jooq {
                         excludes = ""
                     }
                     target.apply {
+
                         packageName = "me.devyonghee.kotlinjooq.generated"
                         directory = "build/generated/jooq/main"
                     }

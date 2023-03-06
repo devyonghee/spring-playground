@@ -1,0 +1,15 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:jooqdb
+    username: sa
+  jooq:
+    sql-dialect: h2
+  exposed:
+    generate-ddl: true
+    show-sql: true
+    excluded-packages: me.devyonghee.flywayorm.exposed
+
+
+logging:
+  level:
+    org.jooq.tools.LoggerListener: DEBUG
