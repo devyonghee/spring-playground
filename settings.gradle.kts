@@ -1,2 +1,2 @@
 rootProject.name = "spring-playground"
-include("flyway-jooq")
+include("flyway-orm")
