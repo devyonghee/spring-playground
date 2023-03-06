@@ -10,15 +10,16 @@ CREATE TABLE article
 
 CREATE TABLE tag
 (
+    id           VARCHAR(36)  NOT NULL PRIMARY KEY,
     article_slug VARCHAR(255) NOT NULL,
     name         VARCHAR(255) NOT NULL,
-    PRIMARY KEY (article_slug, name),
+    unique (article_slug, name),
     FOREIGN KEY (article_slug) REFERENCES article (slug)
 );
 
 CREATE TABLE users
 (
-    id        INT          NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    id        BIGINT       NOT NULL AUTO_INCREMENT PRIMARY KEY,
     username  VARCHAR(255) NOT NULL UNIQUE,
     email     VARCHAR(255) NOT NULL UNIQUE,
     password  VARCHAR(255) NOT NULL,

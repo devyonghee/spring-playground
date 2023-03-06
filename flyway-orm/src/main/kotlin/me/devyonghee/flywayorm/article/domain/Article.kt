@@ -1,6 +1,7 @@
 package me.devyonghee.flywayorm.article.domain
 
-import java.time.LocalDateTime
+import kotlinx.datetime.LocalDateTime
+import kotlinx.datetime.toKotlinLocalDateTime
 import java.util.*
 
 class Article(
@@ -10,8 +11,8 @@ class Article(
     val tags: List<Tag>,
     val slug: String = title.lowercase(Locale.getDefault())
         .replace(" ", "-"),
-    val createdAt: LocalDateTime = LocalDateTime.now(),
-    val updatedAt: LocalDateTime = LocalDateTime.now(),
+    val createdAt: LocalDateTime = java.time.LocalDateTime.now().toKotlinLocalDateTime(),
+    val updatedAt: LocalDateTime = java.time.LocalDateTime.now().toKotlinLocalDateTime(),
     val favorited: Boolean = false,
     val favoritesCount: Int = 0,
 ) {

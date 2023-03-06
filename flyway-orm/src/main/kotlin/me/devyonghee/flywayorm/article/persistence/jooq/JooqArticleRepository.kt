@@ -28,8 +28,10 @@ class JooqArticleRepository(
             .returningResult(ARTICLE.SLUG)
             .fetchOne(ARTICLE.SLUG)!!
         dslContext.insertInto(TAG)
-            .columns(TAG.ARTICLE_SLUG, TAG.NAME)
-            .valuesOfRecords(article.tags.map { dslContext.newRecord(TAG).values(article.slug, it.name) })
+            .columns(TAG.ID, TAG.ARTICLE_SLUG, TAG.NAME)
+            .valuesOfRecords(article.tags.map {
+                dslContext.newRecord(TAG).values(DSL.uuid().toString(), article.slug, it.name)
+            })
             .execute()
         return savedSlug
     }
@@ -46,11 +48,11 @@ class JooqArticleRepository(
 
     private fun tagsMultiset(slug: String): Field<List<TagDto>> {
         return DSL.multiset(
-            DSL.select(TAG.NAME)
+            DSL.select(TAG.ID, TAG.NAME)
                 .from(TAG)
                 .where(TAG.ARTICLE_SLUG.eq(slug))
         ).convertFrom { result ->
-            result.getValues(TAG.NAME).map { TagDto(it) }
+            result.map { TagDto(it.get(TAG.ID), it.get(TAG.NAME)) }
         }
     }
 }
