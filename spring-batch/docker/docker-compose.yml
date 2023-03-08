@@ -1,0 +1,12 @@
+version: "3"
+
+services:
+  batch-db:
+    image: mysql:8.0.32
+#    volumes:
+#      - ./mysql:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: spring_batch
+    ports:
+      - "3306:3306"
