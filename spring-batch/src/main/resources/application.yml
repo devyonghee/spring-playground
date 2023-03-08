@@ -7,4 +7,8 @@ spring:
   batch:
     jdbc:
       initialize-schema: always
-      schema: classpath:org/springframework/batch/core/schema-mysql.sql
+#  quartz:
+#    jdbc:
+#      initialize-schema: always
+
+

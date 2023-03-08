@@ -6,13 +6,13 @@ import org.springframework.batch.repeat.exception.ExceptionHandler
 import org.springframework.stereotype.Component
 
 @Component
-class ItemFailureLoggerListener : ExceptionHandler {
+class StepLogExceptionHandler : ExceptionHandler {
 
     override fun handleException(context: RepeatContext, throwable: Throwable) {
         logger.error("Item failure", throwable)
     }
 
     companion object {
-        private val logger = LoggerFactory.getLogger(ItemFailureLoggerListener::class.java)
+        private val logger = LoggerFactory.getLogger(StepLogExceptionHandler::class.java)
     }
 }

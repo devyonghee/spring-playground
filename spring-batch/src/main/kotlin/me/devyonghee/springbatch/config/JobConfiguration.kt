@@ -1,12 +1,9 @@
 package me.devyonghee.springbatch.config
 
-import me.devyonghee.springbatch.application.ItemFailureLoggerListener
-import me.devyonghee.springbatch.application.StepProcessor
-import me.devyonghee.springbatch.application.StepReader
-import me.devyonghee.springbatch.application.StepWriter
-import org.springframework.batch.core.Job
-import org.springframework.batch.core.JobExecution
-import org.springframework.batch.core.Step
+import me.devyonghee.springbatch.application.SimpleTasklet
+import me.devyonghee.springbatch.application.StepLogExceptionHandler
+import org.springframework.batch.core.*
+import org.springframework.batch.core.configuration.support.DefaultBatchConfiguration
 import org.springframework.batch.core.job.builder.JobBuilder
 import org.springframework.batch.core.launch.support.RunIdIncrementer
 import org.springframework.batch.core.listener.CompositeJobExecutionListener
@@ -15,17 +12,16 @@ import org.springframework.batch.core.step.builder.StepBuilder
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.transaction.PlatformTransactionManager
-import javax.sql.DataSource
 
 
 @Configuration
 class JobConfiguration(
     private val jobRepository: JobRepository,
     private val transactionManager: PlatformTransactionManager
-) {
+) : DefaultBatchConfiguration() {
 
     @Bean
-    fun job(): Job {
+    fun job(simpleStep: Step): Job {
         return JobBuilder("simpleJob", jobRepository)
             .incrementer(RunIdIncrementer())
             .listener(object : CompositeJobExecutionListener() {
@@ -37,18 +33,27 @@ class JobConfiguration(
                     println("beforeJob")
                 }
             })
-            .start(simpleStep1())
+            .start(simpleStep)
             .build()
     }
 
     @Bean
-    fun simpleStep1(): Step {
+    fun simpleStep1(simple: SimpleTasklet, stepLogExceptionHandler: StepLogExceptionHandler): Step {
         return StepBuilder("simpleStep1", jobRepository)
-            .chunk<String, String>(1, transactionManager)
-            .reader(StepReader())
-            .processor(StepProcessor())
-            .writer(StepWriter())
-            .exceptionHandler(ItemFailureLoggerListener())
+            .chunk<String, String>(5, transactionManager)
+            .reader(simple)
+            .processor(simple)
+            .writer(simple)
+            .listener(object : StepExecutionListener {
+                override fun afterStep(stepExecution: StepExecution): ExitStatus {
+                    print("afterStep")
+                    if (stepExecution.readCount > 3) {
+                        return ExitStatus.COMPLETED
+                    }
+                    return ExitStatus.EXECUTING
+                }
+            })
+            .exceptionHandler(stepLogExceptionHandler)
             .build();
     }
 
