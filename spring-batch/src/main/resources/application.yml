@@ -4,11 +4,12 @@ spring:
     username: root
     password: password
     driver-class-name: com.mysql.cj.jdbc.Driver
-  batch:
-    jdbc:
-      initialize-schema: always
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: true
 #  quartz:
 #    jdbc:
 #      initialize-schema: always
-
-
+mybatis:
+  mapper-locations: classpath:mappers/**/*.xml

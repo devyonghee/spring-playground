@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="me.devyonghee.springbatch.payment.PaymentGroupRepository">
+
+    <select id="findPaymentGroupByStatus"
+            parameterType="me.devyonghee.springbatch.payment.Payment.Status"
+            resultType="me.devyonghee.springbatch.payment.PaymentGroup">
+        SELECT SUM(amount) as totalAmount, member_id as memberId
+        FROM payment
+        WHERE status = #{status.value}
+        GROUP BY member_id
+    </select>
+</mapper>
