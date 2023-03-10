@@ -9,7 +9,7 @@ import java.time.LocalDateTime
 class Payment(
     val amount: Long,
     @Enumerated(EnumType.STRING)
-    val status: Status,
+    val status: PaymentStatus,
 
     val memberId: Int,
 
@@ -23,8 +23,4 @@ class Payment(
 
     @LastModifiedDate
     private lateinit var updatedAt: LocalDateTime;
-
-    enum class Status {
-        READY, SUCCESS, FAIL
-    }
 }

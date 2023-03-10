@@ -6,11 +6,11 @@
 <mapper namespace="me.devyonghee.springbatch.payment.PaymentGroupRepository">
 
     <select id="findPaymentGroupByStatus"
-            parameterType="me.devyonghee.springbatch.payment.Payment.Status"
+            parameterType="me.devyonghee.springbatch.payment.PaymentStatus"
             resultType="me.devyonghee.springbatch.payment.PaymentGroup">
         SELECT SUM(amount) as totalAmount, member_id as memberId
         FROM payment
-        WHERE status = #{status.value}
+        WHERE status = #{status}
         GROUP BY member_id
     </select>
 </mapper>

@@ -1,8 +1,8 @@
 package me.devyonghee.springbatch.config
 
 import jakarta.persistence.EntityManagerFactory
-import me.devyonghee.springbatch.payment.Payment
 import me.devyonghee.springbatch.payment.PaymentGroup
+import me.devyonghee.springbatch.payment.PaymentStatus
 import me.devyonghee.springbatch.payment.Settlement
 import me.devyonghee.springbatch.payment.StepLogExceptionHandler
 import org.apache.ibatis.session.SqlSessionFactory
@@ -77,7 +77,7 @@ class JobConfiguration(
         return MyBatisPagingItemReader<PaymentGroup>().apply {
             setSqlSessionFactory(sqlSessionFactory)
             setQueryId("me.devyonghee.springbatch.payment.PaymentGroupRepository.findPaymentGroupByStatus")
-            setParameterValues(mapOf("status" to Payment.Status.READY))
+            setParameterValues(mapOf("status" to PaymentStatus.READY))
             setPageSize(2)
         }
     }
