@@ -1,13 +1,12 @@
 package me.devyonghee.springbatch.payment
 
-import jakarta.persistence.Entity
-import jakarta.persistence.GeneratedValue
-import jakarta.persistence.GenerationType
-import jakarta.persistence.Id
+import jakarta.persistence.*
 import org.springframework.data.annotation.CreatedDate
+import org.springframework.data.jpa.domain.support.AuditingEntityListener
 import java.time.LocalDateTime
 
 @Entity
+@EntityListeners(AuditingEntityListener::class)
 class Settlement(
     private val amount: Int,
     private val memberId: Int,

@@ -16,19 +16,8 @@ CREATE TABLE settlement
     created_at DATETIME NOT NULL
 );
 
-CREATE TABLE settlement_payment
-(
-    id            INTEGER NOT NULL PRIMARY KEY AUTO_INCREMENT,
-    settlement_id INTEGER NOT NULL,
-    payment_id    INTEGER NOT NULL,
-    constraint settlement_payment_payment_id_fk
-        foreign key (payment_id) references payment (id),
-    constraint settlement_payment_settlement_id_fk
-        foreign key (settlement_id) references settlement (id)
-);
-
-insert into payment(status, amount, member_id, created_at, updated_at)
-values ('READY', 100, 1, now(), now()),
+INSERT INTO payment(status, amount, member_id, created_at, updated_at)
+VALUES ('READY', 100, 1, now(), now()),
        ('READY', 200, 1, now(), now()),
        ('READY', 300, 1, now(), now()),
        ('READY', 400, 2, now(), now()),

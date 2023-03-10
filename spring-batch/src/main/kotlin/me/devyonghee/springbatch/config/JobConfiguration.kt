@@ -95,6 +95,7 @@ class JobConfiguration(
     fun writer(entityManagerFactory: EntityManagerFactory): JpaItemWriter<Settlement> {
         return JpaItemWriterBuilder<Settlement>()
             .entityManagerFactory(entityManagerFactory)
+            .usePersist(true)
             .build()
     }
 }
