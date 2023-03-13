@@ -1,4 +1,4 @@
-package me.devyonghee.springbatch.payment
+package me.devyonghee.springbatch.payment.domain
 
 import org.slf4j.LoggerFactory
 import org.springframework.batch.repeat.RepeatContext

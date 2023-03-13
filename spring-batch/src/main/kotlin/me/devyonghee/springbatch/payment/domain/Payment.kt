@@ -1,4 +1,4 @@
-package me.devyonghee.springbatch.payment
+package me.devyonghee.springbatch.payment.domain
 
 import jakarta.persistence.*
 import org.springframework.data.annotation.CreatedDate
@@ -11,7 +11,7 @@ import java.time.LocalDateTime
 class Payment(
     val amount: Long,
     @Enumerated(EnumType.STRING)
-    val status: PaymentStatus,
+    val status: Status,
 
     val memberId: Int,
 
@@ -25,4 +25,8 @@ class Payment(
 
     @LastModifiedDate
     private lateinit var updatedAt: LocalDateTime;
+
+    enum class Status {
+        READY, SUCCESS, FAIL
+    }
 }

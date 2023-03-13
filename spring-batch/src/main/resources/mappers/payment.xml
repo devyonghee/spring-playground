@@ -3,14 +3,14 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="me.devyonghee.springbatch.payment.PaymentGroupRepository">
+<mapper namespace="me.devyonghee.springbatch.payment.domain.PaymentGroupRepository">
 
     <select id="findPaymentGroupByStatus"
-            parameterType="me.devyonghee.springbatch.payment.PaymentStatus"
-            resultType="me.devyonghee.springbatch.payment.PaymentGroup">
-        SELECT SUM(amount) as totalAmount, member_id as memberId
+            parameterType="me.devyonghee.springbatch.payment.domain.Payment$Status"
+            resultType="me.devyonghee.springbatch.payment.domain.PaymentGroup">
+        SELECT SUM(amount) as total_amount, member_id
         FROM payment
-        WHERE status = #{status}
+        WHERE created_at between #{fromDateTime} and #{toDateTime}
         GROUP BY member_id
     </select>
 </mapper>

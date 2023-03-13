@@ -1,4 +1,4 @@
-package me.devyonghee.springbatch.payment
+package me.devyonghee.springbatch.payment.domain
 
 import jakarta.persistence.*
 import org.springframework.data.annotation.CreatedDate

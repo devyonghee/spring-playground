@@ -1,4 +1,4 @@
-package me.devyonghee.springbatch.payment
+package me.devyonghee.springbatch.payment.domain
 
 class PaymentGroup(
     val totalAmount: Int,
