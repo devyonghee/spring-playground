@@ -10,25 +10,25 @@ import org.springframework.batch.core.JobParametersBuilder
 import org.springframework.batch.core.configuration.JobLocator
 import org.springframework.batch.core.launch.JobLauncher
 import org.springframework.scheduling.quartz.QuartzJobBean
-import org.springframework.stereotype.Component
 
 
-@Component
 @DisallowConcurrentExecution
-class PaymentSettlementQuartzJob(
-    private val jobLauncher: JobLauncher,
-    private val jobLocator: JobLocator,
-) : QuartzJobBean() {
+@Suppress("MemberVisibilityCanBePrivate")
+class PaymentSettlementQuartzJob : QuartzJobBean() {
+
+    var jobName: String? = null
+    var jobLauncher: JobLauncher? = null
+    var jobLocator: JobLocator? = null
 
     override fun executeInternal(context: JobExecutionContext) {
-        val job: Job = jobLocator.getJob(context.jobDetail.jobDataMap.getString("jobName"))
-        log.info("{} started.", job.name)
+        val job: Job = jobLocator!!.getJob(jobName)
+        log.info("{} started", jobName)
         val params: JobParameters = JobParametersBuilder()
             .addString("JobId", System.currentTimeMillis().toString())
             .toJobParameters()
         try {
-            jobLauncher.run(job, params)
-            log.info("{} completed.", job.name)
+            jobLauncher!!.run(job, params)
+            log.info("{} completed", jobName)
         } catch (e: Exception) {
             log.error("paymentSettlement batch job failed for params('$params')", e)
         }

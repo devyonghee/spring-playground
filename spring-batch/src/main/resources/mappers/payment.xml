@@ -6,7 +6,6 @@
 <mapper namespace="me.devyonghee.springbatch.payment.domain.PaymentGroupRepository">
 
     <select id="findPaymentGroupByStatus"
-            parameterType="me.devyonghee.springbatch.payment.domain.Payment$Status"
             resultType="me.devyonghee.springbatch.payment.domain.PaymentGroup">
         SELECT SUM(amount) as total_amount, member_id
         FROM payment

@@ -1,15 +1,12 @@
 package me.devyonghee.springbatch.payment
 
-import jakarta.annotation.PostConstruct
 import jakarta.persistence.EntityManagerFactory
 import me.devyonghee.springbatch.payment.domain.PaymentGroup
 import me.devyonghee.springbatch.payment.domain.Settlement
 import me.devyonghee.springbatch.payment.domain.StepLogExceptionHandler
 import org.apache.ibatis.session.SqlSessionFactory
 import org.mybatis.spring.batch.builder.MyBatisPagingItemReaderBuilder
-import org.quartz.*
 import org.springframework.batch.core.*
-import org.springframework.batch.core.Job
 import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing
 import org.springframework.batch.core.configuration.annotation.StepScope
 import org.springframework.batch.core.job.builder.JobBuilder
@@ -35,29 +32,12 @@ class PaymentSettlementBatchJob(
     private val sqlSessionFactory: SqlSessionFactory,
     private val stepLogExceptionHandler: StepLogExceptionHandler,
     private val entityManagerFactory: EntityManagerFactory,
-    private val scheduler: Scheduler,
     private val jobRepository: JobRepository,
 ) {
 
-    @PostConstruct
-    fun exampleJob1Trigger() {
-        val job: JobDetail = org.quartz.JobBuilder.newJob(PaymentSettlementQuartzJob::class.java)
-            .setJobData(JobDataMap(mapOf("jobName" to "paymentSettlementJob")))
-            .build()
-        val trigger: Trigger = TriggerBuilder.newTrigger()
-//            .withSchedule(CronScheduleBuilder.cronSchedule("*/10 * * * * ?"))
-            .withSchedule(
-                SimpleScheduleBuilder.simpleSchedule()
-                    .withIntervalInSeconds(10)
-                    .repeatForever()
-            )
-            .build()
-        scheduler.scheduleJob(job, trigger)
-    }
-
-    @Bean()
+    @Bean
     fun job(): Job {
-        return JobBuilder("paymentSettlementJob", jobRepository)
+        return JobBuilder(JOB_NAME, jobRepository)
             .incrementer(RunIdIncrementer())
             .listener(object : CompositeJobExecutionListener() {
                 override fun afterJob(jobExecution: JobExecution) {
@@ -74,7 +54,7 @@ class PaymentSettlementBatchJob(
 
     @Bean
     fun simpleStep(): Step {
-        return StepBuilder("simpleStep", jobRepository)
+        return StepBuilder("$JOB_NAME step", jobRepository)
             .chunk<PaymentGroup, Settlement>(5, transactionManager)
             .reader(reader())
             .processor(processor())
@@ -89,7 +69,7 @@ class PaymentSettlementBatchJob(
                 }
             })
             .exceptionHandler(stepLogExceptionHandler)
-            .build();
+            .build()
     }
 
     @Bean
@@ -125,4 +105,7 @@ class PaymentSettlementBatchJob(
             .build()
     }
 
+    companion object {
+        const val JOB_NAME = "paymentSettlementJob"
+    }
 }
