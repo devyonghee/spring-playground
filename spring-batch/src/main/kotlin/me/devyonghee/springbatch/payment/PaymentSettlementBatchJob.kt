@@ -10,6 +10,7 @@ import org.mybatis.spring.batch.builder.MyBatisPagingItemReaderBuilder
 import org.quartz.*
 import org.springframework.batch.core.*
 import org.springframework.batch.core.Job
+import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing
 import org.springframework.batch.core.configuration.annotation.StepScope
 import org.springframework.batch.core.job.builder.JobBuilder
 import org.springframework.batch.core.launch.support.RunIdIncrementer
@@ -28,34 +29,33 @@ import java.time.temporal.ChronoUnit
 
 
 @Configuration
-class PaymentSettlementJobConfiguration(
-    private val jobRepository: JobRepository,
+@EnableBatchProcessing
+class PaymentSettlementBatchJob(
     private val transactionManager: PlatformTransactionManager,
     private val sqlSessionFactory: SqlSessionFactory,
     private val stepLogExceptionHandler: StepLogExceptionHandler,
     private val entityManagerFactory: EntityManagerFactory,
     private val scheduler: Scheduler,
+    private val jobRepository: JobRepository,
 ) {
 
     @PostConstruct
     fun exampleJob1Trigger() {
-        val job: JobDetail = org.quartz.JobBuilder.newJob(PaymentQuartzJobConfiguration::class.java)
-            .withIdentity("job")
+        val job: JobDetail = org.quartz.JobBuilder.newJob(PaymentSettlementQuartzJob::class.java)
+            .setJobData(JobDataMap(mapOf("jobName" to "paymentSettlementJob")))
             .build()
         val trigger: Trigger = TriggerBuilder.newTrigger()
-            .forJob(job)
-            .withIdentity("trigger1", "group1")
-//            .withSchedule(CronScheduleBuilder.cronSchedule("*/20 * * * * ?"))
+//            .withSchedule(CronScheduleBuilder.cronSchedule("*/10 * * * * ?"))
             .withSchedule(
                 SimpleScheduleBuilder.simpleSchedule()
-                    .withIntervalInSeconds(20)
+                    .withIntervalInSeconds(10)
                     .repeatForever()
             )
             .build()
-        scheduler.scheduleJob(trigger)
+        scheduler.scheduleJob(job, trigger)
+    }
 
-
-    @Bean
+    @Bean()
     fun job(): Job {
         return JobBuilder("paymentSettlementJob", jobRepository)
             .incrementer(RunIdIncrementer())
@@ -68,12 +68,12 @@ class PaymentSettlementJobConfiguration(
                     println("beforeJob")
                 }
             })
-            .start(simpleStep1())
+            .start(simpleStep())
             .build()
     }
 
     @Bean
-    fun simpleStep1(): Step {
+    fun simpleStep(): Step {
         return StepBuilder("simpleStep", jobRepository)
             .chunk<PaymentGroup, Settlement>(5, transactionManager)
             .reader(reader())
@@ -94,13 +94,13 @@ class PaymentSettlementJobConfiguration(
 
     @Bean
     fun reader(): ItemReader<PaymentGroup> {
-        val toDay = LocalDateTime.now().truncatedTo(ChronoUnit.DAYS)
+        val today = LocalDateTime.now().truncatedTo(ChronoUnit.DAYS)
         return MyBatisPagingItemReaderBuilder<PaymentGroup>()
             .sqlSessionFactory(sqlSessionFactory)
             .parameterValues(
                 mapOf(
-                    "fromDateTime" to toDay,
-                    "toDateTime" to toDay.plusDays(1)
+                    "fromDateTime" to today,
+                    "toDateTime" to today.plusDays(1)
                 )
             )
             .queryId("me.devyonghee.springbatch.payment.domain.PaymentGroupRepository.findPaymentGroupByStatus")
@@ -124,4 +124,5 @@ class PaymentSettlementJobConfiguration(
             .usePersist(true)
             .build()
     }
+
 }
