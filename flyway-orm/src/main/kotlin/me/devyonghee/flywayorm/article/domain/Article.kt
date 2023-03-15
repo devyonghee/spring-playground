@@ -11,10 +11,9 @@ class Article(
     val tags: List<Tag>,
     val slug: String = title.lowercase(Locale.getDefault())
         .replace(" ", "-"),
+    val favoritesCount: Int = 0,
     val createdAt: LocalDateTime = java.time.LocalDateTime.now().toKotlinLocalDateTime(),
     val updatedAt: LocalDateTime = java.time.LocalDateTime.now().toKotlinLocalDateTime(),
-    val favorited: Boolean = false,
-    val favoritesCount: Int = 0,
 ) {
     init {
         require(title.isNotBlank()) { "title must not be blank" }

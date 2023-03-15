@@ -1,11 +1,12 @@
 CREATE TABLE article
 (
-    slug        VARCHAR(255) NOT NULL PRIMARY KEY,
-    title       VARCHAR(255) NOT NULL UNIQUE,
-    description VARCHAR(255) NOT NULL,
-    body        TEXT         NOT NULL,
-    created_at  DATETIME     NOT NULL,
-    updated_at  DATETIME     NOT NULL
+    slug            VARCHAR(255) NOT NULL PRIMARY KEY,
+    title           VARCHAR(255) NOT NULL UNIQUE,
+    description     VARCHAR(255) NOT NULL,
+    body            TEXT         NOT NULL,
+    favorites_count INT          NOT NULL DEFAULT 0,
+    created_at      DATETIME     NOT NULL,
+    updated_at      DATETIME     NOT NULL
 );
 
 CREATE TABLE tag
@@ -19,11 +20,10 @@ CREATE TABLE tag
 
 CREATE TABLE users
 (
-    id        BIGINT       NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    username  VARCHAR(255) NOT NULL UNIQUE,
-    email     VARCHAR(255) NOT NULL UNIQUE,
-    password  VARCHAR(255) NOT NULL,
-    bio       VARCHAR(255) NOT NULL,
-    image     VARCHAR(255) NULL,
-    following BIT          NOT NULL DEFAULT FALSE
+    id       BIGINT       NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(255) NOT NULL UNIQUE,
+    email    VARCHAR(255) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
+    bio      VARCHAR(255) NOT NULL,
+    image    VARCHAR(255) NULL
 );

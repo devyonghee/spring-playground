@@ -11,7 +11,7 @@ import java.net.URI
 class UserJooqRepository(
     private val dslContext: DSLContext,
 ) {
-    fun save(user: User): String {
+    fun save(user: User): Long {
         return dslContext.insertInto(USERS)
             .values(
                 user.username,
@@ -19,10 +19,9 @@ class UserJooqRepository(
                 user.password,
                 user.bio,
                 user.image?.toString(),
-                user.following
             )
-            .returningResult(USERS.USERNAME)
-            .fetchOneInto(String::class.java)!!
+            .returningResult(USERS.ID)
+            .fetchOneInto(Long::class.java)!!
     }
 
     fun findByUsername(username: String): User? {
@@ -46,9 +45,8 @@ class UserDto(
     private val password: String,
     private val bio: String,
     private val image: String?,
-    private val following: Boolean,
 ) {
     fun toDomain(): User {
-        return User(username, password, Email(email), bio, image?.let { URI(it) }, following)
+        return User(username, password, Email(email), bio, image?.let { URI(it) })
     }
 }

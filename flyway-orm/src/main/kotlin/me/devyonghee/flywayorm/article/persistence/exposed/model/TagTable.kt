@@ -1,4 +1,4 @@
-package me.devyonghee.flywayorm.article.persistence.exposed.table
+package me.devyonghee.flywayorm.article.persistence.exposed.model
 
 import org.jetbrains.exposed.dao.id.EntityID
 import org.jetbrains.exposed.dao.id.UUIDTable

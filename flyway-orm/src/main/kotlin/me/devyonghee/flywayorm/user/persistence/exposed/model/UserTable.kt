@@ -1,4 +1,4 @@
-package me.devyonghee.flywayorm.user.persistence.exposed.table
+package me.devyonghee.flywayorm.user.persistence.exposed.model
 
 import org.jetbrains.exposed.dao.id.LongIdTable
 import org.jetbrains.exposed.sql.Column
@@ -10,5 +10,4 @@ object UserTable : LongIdTable("users") {
     val password: Column<String> = varchar("password", 255)
     val bio: Column<String> = varchar("bio", 255)
     val image: Column<String?> = varchar("image", 255).nullable()
-    val following: Column<Boolean> = bool("following")
 }

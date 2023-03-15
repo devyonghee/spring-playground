@@ -1,6 +1,6 @@
-package me.devyonghee.flywayorm.article.persistence.exposed.table
+package me.devyonghee.flywayorm.article.persistence.exposed.model
 
-import me.devyonghee.flywayorm.article.domain.Article
+import me.devyonghee.flywayorm.article.domain.Tag
 import org.jetbrains.exposed.dao.Entity
 import org.jetbrains.exposed.dao.EntityClass
 import org.jetbrains.exposed.dao.id.EntityID
@@ -11,4 +11,8 @@ class TagEntity(id: EntityID<UUID>) : Entity<UUID>(id) {
 
     var name by TagTable.name
     var article by ArticleEntity referencedOn TagTable.article
+
+    fun toDomain(): Tag {
+        return Tag(name)
+    }
 }

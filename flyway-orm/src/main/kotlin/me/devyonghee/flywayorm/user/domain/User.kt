@@ -8,7 +8,7 @@ class User(
     val email: Email,
     val bio: String = "",
     val image: URI? = null,
-    val following: Boolean = false,
+    val id: Long = 0,
 ) {
     init {
         require(username.isNotBlank()) { "username must not be blank" }

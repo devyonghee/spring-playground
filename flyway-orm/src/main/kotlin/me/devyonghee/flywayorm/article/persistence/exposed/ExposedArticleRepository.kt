@@ -1,8 +1,9 @@
 package me.devyonghee.flywayorm.article.persistence.exposed
 
 import me.devyonghee.flywayorm.article.domain.Article
-import me.devyonghee.flywayorm.article.persistence.exposed.table.ArticleEntity
-import me.devyonghee.flywayorm.article.persistence.exposed.table.TagEntity
+import me.devyonghee.flywayorm.article.persistence.exposed.model.ArticleEntity
+import me.devyonghee.flywayorm.article.persistence.exposed.model.ArticleTable
+import me.devyonghee.flywayorm.article.persistence.exposed.model.TagEntity
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.springframework.stereotype.Component
 
@@ -11,8 +12,7 @@ class ExposedArticleRepository {
 
     fun save(targetArticle: Article): String {
         return transaction {
-            val newArticle = ArticleEntity.new {
-                slug = targetArticle.slug
+            val newArticle = ArticleEntity.new(targetArticle.slug) {
                 title = targetArticle.title
                 description = targetArticle.description
                 body = targetArticle.body
@@ -26,6 +26,13 @@ class ExposedArticleRepository {
                 }
             }
             newArticle
-        }.slug
+        }.id.value
+    }
+
+    fun findBySlug(slug: String): Article? {
+        return transaction {
+            ArticleEntity.find { ArticleTable.id eq slug }
+                .firstOrNull()?.toDomain()
+        }
     }
 }

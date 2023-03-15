@@ -13,10 +13,10 @@ class ArticleDao(
 ) : ArticleRepository {
 
     override fun save(article: Article): String {
-        return jooqArticleRepository.save(article)
+        return exposedArticleRepository.save(article)
     }
 
     override fun findById(slug: String): Article? {
-        return jooqArticleRepository.findBySlug(slug)
+        return exposedArticleRepository.findBySlug(slug)
     }
 }
