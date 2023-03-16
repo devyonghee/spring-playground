@@ -2,8 +2,8 @@ plugins {
     id("nu.studer.jooq") version "8.1"
     id("org.flywaydb.flyway") version "9.5.1"
 
-    kotlin("plugin.jpa") version "1.6.0"
-//    kotlin("kapt")
+    kotlin("plugin.jpa") version "1.6.21"
+    kotlin("kapt")
 }
 
 val flywayMigration = configurations.create("flywayMigration")
@@ -32,9 +32,12 @@ dependencies {
     //jpa
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     //querydsl
-//    implementation("com.querydsl:querydsl-jpa")
-//    implementation("com.querydsl:querydsl-apt")
-//    kapt("com.querydsl:querydsl-apt:5.0.0:jpa")
+//    implementation("com.querydsl:querydsl-jpa:5.0.0:jakarta")
+//    implementation("com.querydsl:querydsl-core:5.0.0")
+//    kapt("com.querydsl:querydsl-apt:5.0.0:jakarta")
+//    kapt("com.querydsl:querydsl-kotlin-codegen:5.0.0")
+    implementation(group = "com.querydsl", name="querydsl-jpa", classifier="jakarta")
+    kapt(group = "com.querydsl", name="querydsl-apt", classifier="jakarta")
 
 
     runtimeOnly("com.h2database:h2")
@@ -81,7 +84,10 @@ tasks.named("generateJooq").configure {
     }
 }
 
-//tasks.register("generateQueryDsl") {
-//    dependsOn(tasks.clean)
-//    dependsOn(tasks.compileKotlin)
-//}
+sourceSets {
+    main {
+        kotlin {
+            srcDir("$buildDir/generated/source/kapt/main")
+        }
+    }
+}
