@@ -14,4 +14,9 @@ class User(
         require(username.isNotBlank()) { "username must not be blank" }
         require(password.isNotBlank()) { "password must not be blank" }
     }
+    val emailString
+        get() = email.value
+
+    val imageString
+        get() = image.toString()
 }

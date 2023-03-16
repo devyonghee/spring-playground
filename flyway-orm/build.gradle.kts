@@ -1,6 +1,9 @@
 plugins {
     id("nu.studer.jooq") version "8.1"
     id("org.flywaydb.flyway") version "9.5.1"
+
+    kotlin("plugin.jpa") version "1.6.0"
+//    kotlin("kapt")
 }
 
 val flywayMigration = configurations.create("flywayMigration")
@@ -22,12 +25,19 @@ dependencies {
 
     //jooq
     implementation("org.springframework.boot:spring-boot-starter-jooq")
+    jooqGenerator("com.h2database:h2")
     //exposed
     implementation("org.jetbrains.exposed:exposed-spring-boot-starter:0.41.1")
     implementation("org.jetbrains.exposed:exposed-kotlin-datetime:0.41.1")
+    //jpa
+    implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+    //querydsl
+//    implementation("com.querydsl:querydsl-jpa")
+//    implementation("com.querydsl:querydsl-apt")
+//    kapt("com.querydsl:querydsl-apt:5.0.0:jpa")
+
 
     runtimeOnly("com.h2database:h2")
-    jooqGenerator("com.h2database:h2")
     flywayMigration("com.h2database:h2")
     implementation("org.flywaydb:flyway-core")
 }
@@ -52,7 +62,6 @@ jooq {
                         excludes = ""
                     }
                     target.apply {
-
                         packageName = "me.devyonghee.kotlinjooq.generated"
                         directory = "build/generated/jooq/main"
                     }
@@ -71,3 +80,8 @@ tasks.named("generateJooq").configure {
         delete("$h2Path.mv.db")
     }
 }
+
+//tasks.register("generateQueryDsl") {
+//    dependsOn(tasks.clean)
+//    dependsOn(tasks.compileKotlin)
+//}
