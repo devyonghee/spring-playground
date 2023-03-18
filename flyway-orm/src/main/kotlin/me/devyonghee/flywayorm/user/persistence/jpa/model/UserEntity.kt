@@ -1,12 +1,14 @@
 package me.devyonghee.flywayorm.user.persistence.jpa.model
 
-import jakarta.persistence.*
+import jakarta.persistence.Entity
+import jakarta.persistence.GeneratedValue
+import jakarta.persistence.GenerationType
+import jakarta.persistence.Id
 import me.devyonghee.flywayorm.user.domain.Email
 import me.devyonghee.flywayorm.user.domain.User
 import java.net.URI
 
-@Entity
-@Table(name = "users")
+@Entity(name = "users")
 class UserEntity(
     var username: String,
     var email: String,

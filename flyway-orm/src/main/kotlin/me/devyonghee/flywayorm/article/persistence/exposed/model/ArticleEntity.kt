@@ -1,5 +1,6 @@
 package me.devyonghee.flywayorm.article.persistence.exposed.model
 
+import kotlinx.datetime.toJavaLocalDateTime
 import me.devyonghee.flywayorm.article.domain.Article
 import org.jetbrains.exposed.dao.Entity
 import org.jetbrains.exposed.dao.EntityClass
@@ -25,8 +26,8 @@ class ArticleEntity(slug: EntityID<String>) : Entity<String>(slug) {
             tags.map { it.toDomain() },
             slug.value,
             favoritesCount,
-            createdAt,
-            updatedAt,
+            createdAt.toJavaLocalDateTime(),
+            updatedAt.toJavaLocalDateTime(),
         )
     }
 }

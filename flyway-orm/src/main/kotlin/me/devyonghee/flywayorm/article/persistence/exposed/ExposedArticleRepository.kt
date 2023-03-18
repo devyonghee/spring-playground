@@ -1,5 +1,6 @@
 package me.devyonghee.flywayorm.article.persistence.exposed
 
+import kotlinx.datetime.toKotlinLocalDateTime
 import me.devyonghee.flywayorm.article.domain.Article
 import me.devyonghee.flywayorm.article.persistence.exposed.model.ArticleEntity
 import me.devyonghee.flywayorm.article.persistence.exposed.model.ArticleTable
@@ -16,8 +17,8 @@ class ExposedArticleRepository {
                 title = targetArticle.title
                 description = targetArticle.description
                 body = targetArticle.body
-                createdAt = targetArticle.createdAt
-                updatedAt = targetArticle.updatedAt
+                createdAt = targetArticle.createdAt.toKotlinLocalDateTime()
+                updatedAt = targetArticle.updatedAt.toKotlinLocalDateTime()
             }
             targetArticle.tags.forEach { tag ->
                 TagEntity.new {

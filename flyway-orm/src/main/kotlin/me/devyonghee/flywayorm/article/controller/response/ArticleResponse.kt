@@ -1,8 +1,8 @@
 package me.devyonghee.flywayorm.article.controller.response
 
-import kotlinx.datetime.LocalDateTime
 import me.devyonghee.flywayorm.article.domain.Article
 import me.devyonghee.flywayorm.article.domain.Tag
+import java.time.LocalDateTime
 
 data class ArticleResponse(
     private val article: Article

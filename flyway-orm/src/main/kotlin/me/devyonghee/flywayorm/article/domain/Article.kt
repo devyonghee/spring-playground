@@ -1,7 +1,6 @@
 package me.devyonghee.flywayorm.article.domain
 
-import kotlinx.datetime.LocalDateTime
-import kotlinx.datetime.toKotlinLocalDateTime
+import java.time.LocalDateTime
 import java.util.*
 
 class Article(
@@ -12,8 +11,8 @@ class Article(
     val slug: String = title.lowercase(Locale.getDefault())
         .replace(" ", "-"),
     val favoritesCount: Int = 0,
-    val createdAt: LocalDateTime = java.time.LocalDateTime.now().toKotlinLocalDateTime(),
-    val updatedAt: LocalDateTime = java.time.LocalDateTime.now().toKotlinLocalDateTime(),
+    val createdAt: LocalDateTime = LocalDateTime.now(),
+    val updatedAt: LocalDateTime = LocalDateTime.now(),
 ) {
     init {
         require(title.isNotBlank()) { "title must not be blank" }

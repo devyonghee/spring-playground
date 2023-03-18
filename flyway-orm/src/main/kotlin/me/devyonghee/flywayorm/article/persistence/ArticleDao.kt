@@ -6,7 +6,7 @@ import me.devyonghee.flywayorm.article.persistence.exposed.ExposedArticleReposit
 import me.devyonghee.flywayorm.article.persistence.jooq.JooqArticleRepository
 import me.devyonghee.flywayorm.article.persistence.jpa.JpaArticleRepository
 import me.devyonghee.flywayorm.article.persistence.jpa.model.ArticleEntity
-import org.springframework.data.repository.findByIdOrNull
+import me.devyonghee.flywayorm.article.persistence.querydsl.QuerydslArticleRepository
 import org.springframework.stereotype.Repository
 
 @Repository
@@ -14,6 +14,7 @@ class ArticleDao(
     private val jooqArticleRepository: JooqArticleRepository,
     private val exposedArticleRepository: ExposedArticleRepository,
     private val jpaArticleRepository: JpaArticleRepository,
+    private val querydslArticleRepository: QuerydslArticleRepository,
 ) : ArticleRepository {
 
     override fun save(article: Article): String {
@@ -21,6 +22,6 @@ class ArticleDao(
     }
 
     override fun findById(slug: String): Article? {
-        return jpaArticleRepository.findByIdOrNull(slug)?.toDomain()
+        return querydslArticleRepository.findBySlug(slug)
     }
 }

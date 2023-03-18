@@ -1,15 +1,16 @@
 package me.devyonghee.flywayorm.article.persistence.jpa.model
 
-import jakarta.persistence.*
-import kotlinx.datetime.toJavaLocalDateTime
+import jakarta.persistence.CascadeType
+import jakarta.persistence.Entity
+import jakarta.persistence.Id
+import jakarta.persistence.OneToMany
 import kotlinx.datetime.toKotlinLocalDateTime
 import me.devyonghee.flywayorm.article.domain.Article
 import org.springframework.data.annotation.CreatedDate
 import org.springframework.data.annotation.LastModifiedDate
 import java.time.LocalDateTime
 
-@Entity
-@Table(name = "article")
+@Entity(name = "article")
 class ArticleEntity(
     @Id
     val slug: String,
@@ -31,8 +32,8 @@ class ArticleEntity(
         article.body,
         article.favoritesCount,
         article.tags.map { TagEntity(it.id, it.name) },
-        article.createdAt.toJavaLocalDateTime(),
-        article.updatedAt.toJavaLocalDateTime(),
+        article.createdAt,
+        article.updatedAt,
     )
 
     init {
@@ -47,8 +48,8 @@ class ArticleEntity(
             tags.toDomain(),
             slug,
             favoritesCount,
-            createdAt.toKotlinLocalDateTime(),
-            updatedAt.toKotlinLocalDateTime(),
+            createdAt,
+            updatedAt,
         )
     }
 }
