@@ -11,5 +11,6 @@
         FROM payment
         WHERE created_at between #{fromDateTime} and #{toDateTime}
         GROUP BY member_id
+        LIMIT #{_skiprows}, #{_pagesize}
     </select>
 </mapper>

@@ -18,11 +18,11 @@ import org.springframework.batch.item.ItemProcessor
 import org.springframework.batch.item.ItemReader
 import org.springframework.batch.item.database.JpaItemWriter
 import org.springframework.batch.item.database.builder.JpaItemWriterBuilder
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.transaction.PlatformTransactionManager
 import java.time.LocalDateTime
-import java.time.temporal.ChronoUnit
 
 
 @Configuration
@@ -36,7 +36,7 @@ class PaymentSettlementBatchJob(
 ) {
 
     @Bean
-    fun job(): Job {
+    fun job(simpleStep: Step): Job {
         return JobBuilder(JOB_NAME, jobRepository)
             .incrementer(RunIdIncrementer())
             .listener(object : CompositeJobExecutionListener() {
@@ -48,15 +48,17 @@ class PaymentSettlementBatchJob(
                     println("beforeJob")
                 }
             })
-            .start(simpleStep())
+            .start(simpleStep)
             .build()
     }
 
     @Bean
-    fun simpleStep(): Step {
+    fun simpleStep(
+        paymentGroupReader: ItemReader<PaymentGroup>,
+    ): Step {
         return StepBuilder("$JOB_NAME step", jobRepository)
             .chunk<PaymentGroup, Settlement>(5, transactionManager)
-            .reader(reader())
+            .reader(paymentGroupReader)
             .processor(processor())
             .writer(writer())
             .listener(object : StepExecutionListener {
@@ -73,14 +75,17 @@ class PaymentSettlementBatchJob(
     }
 
     @Bean
-    fun reader(): ItemReader<PaymentGroup> {
-        val today = LocalDateTime.now().truncatedTo(ChronoUnit.DAYS)
+    @StepScope
+    fun reader(
+        @Value("#{jobParameters[targetDatetime]}")
+        targetDateTime: LocalDateTime
+    ): ItemReader<PaymentGroup> {
         return MyBatisPagingItemReaderBuilder<PaymentGroup>()
             .sqlSessionFactory(sqlSessionFactory)
             .parameterValues(
                 mapOf(
-                    "fromDateTime" to today,
-                    "toDateTime" to today.plusDays(1)
+                    "fromDateTime" to targetDateTime,
+                    "toDateTime" to targetDateTime.plusDays(1)
                 )
             )
             .queryId("me.devyonghee.springbatch.payment.domain.PaymentGroupRepository.findPaymentGroupByStatus")

@@ -10,6 +10,7 @@ import org.springframework.batch.core.JobParametersBuilder
 import org.springframework.batch.core.configuration.JobLocator
 import org.springframework.batch.core.launch.JobLauncher
 import org.springframework.scheduling.quartz.QuartzJobBean
+import java.time.LocalDate
 
 
 @DisallowConcurrentExecution
@@ -25,6 +26,7 @@ class PaymentSettlementQuartzJob : QuartzJobBean() {
         log.info("{} started", jobName)
         val params: JobParameters = JobParametersBuilder()
             .addString("JobId", System.currentTimeMillis().toString())
+            .addLocalDateTime("targetDatetime", LocalDate.now().atStartOfDay())
             .toJobParameters()
         try {
             jobLauncher!!.run(job, params)
