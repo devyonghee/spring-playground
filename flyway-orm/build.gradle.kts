@@ -2,7 +2,7 @@ plugins {
     id("nu.studer.jooq") version "8.1"
     id("org.flywaydb.flyway") version "9.5.1"
 
-    kotlin("plugin.jpa") version "1.6.21"
+    kotlin("plugin.jpa")
     kotlin("kapt")
 }
 
