@@ -7,6 +7,7 @@ plugins {
     id("io.spring.dependency-management") version "1.1.0"
     kotlin("jvm") version "1.8.0"
     kotlin("plugin.spring") version "1.8.0" apply false
+    kotlin("plugin.jpa") version "1.8.0" apply false
     id("org.jlleitschuh.gradle.ktlint") version "11.2.0"
     id("org.jlleitschuh.gradle.ktlint-idea") version "11.2.0"
 }
